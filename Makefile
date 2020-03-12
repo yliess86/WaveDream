@@ -1,31 +1,30 @@
 RM=rm -rf
-MKDIR=mkdir
+MKDIR=mkdir -p
 
 CXX=g++ -std=c++17
 LDLIBS=-lsoundio -lpthread
 SHARED=-shared
-FPIC=-fPIC
+FPIC=-fPIC -g
 
-HEADERS=$(lsforeach header, $(wildcard src/*.hpp), $(header);)
-HEADERS_OBJ=$(lsforeach header, $(wildcard $(HEADERS)), $(header:.hpp=.o);)
-HEADERS_OBJ=$(lsforeach header, $(wildcard $(HEADERS)), $(header:.src=.build);)
+MAIN=src/main.cpp
+IMPORT=src/import.cpp
 
-SRCS=src/*.cpp
-
-EXE=wavedream
-
-SO_COMP=libwavedream.c
-SO=libwavedream.so
+IMPORT_OBJ=build/import.o
+EXE=build/wavedream
+SO=lib/libwavedream.so
 
 build:
 	$(MKDIR) build
-	$(CXX) $(SRCS) -o build/$(EXE) $(LDLIBS)
+	$(CXX) -o $(EXE) $(MAIN) $(LDLIBS)
 
 shared:
 	$(MKDIR) lib
 	$(MKDIR) build
-	$(CXX) $(FPIC) -c -o $(HEADERS_OBJ) $(HEADERS)
+	$(CXX) $(FPIC) -o $(IMPORT_OBJ) $(IMPORT)
+	$(CXX) -o $(SO) $(IMPORT_OBJ) $(SHARED) $(LIBS)
 
 clean:
 	$(RM) build
 	$(RM) lib
+
+all: clean build shared
