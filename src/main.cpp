@@ -1,12 +1,12 @@
 #include <iostream>
 
-#include "const.hpp"
-#include "audio.hpp"
-#include "clock.hpp"
-#include "osc.hpp"
-#include "timbre.hpp"
-#include "adsr.hpp"
-#include "instrument.hpp"
+#include "core/const.hpp"
+#include "core/audio.hpp"
+#include "core/clock.hpp"
+#include "core/osc.hpp"
+#include "core/timbre.hpp"
+#include "core/adsr.hpp"
+#include "core/instrument.hpp"
 
 template<typename T>
 class Harmonica: public wavedream::Instrument<T> {
