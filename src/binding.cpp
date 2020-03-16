@@ -1,4 +1,5 @@
 #include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 namespace py = pybind11;
 
 #include "core/adsr.hpp"
@@ -14,7 +15,6 @@ using namespace wavedream;
 PYBIND11_MODULE(wavedream, m) {
     py::class_<Audio<double>, std::unique_ptr<Audio<double>, py::nodelete>>(m, "Audio")
         .def(py::init(&Audio<double>::GetInstance), py::return_value_policy::reference)
-        .def_static("get_instance", &Audio<double>::GetInstance, "Get audio instance.")
         .def("init", &Audio<double>::Init, "Init audio device and outstream.")
         .def("run", &Audio<double>::Run, "Run audio output thread")
         .def("stop", &Audio<double>::Stop, "Stop audio device and outstream.")
@@ -48,7 +48,11 @@ PYBIND11_MODULE(wavedream, m) {
     py::class_<Oscillator<double>> osc(m, "Oscillator");
 
     osc.def(py::init<int>())
-        .def_property_readonly("osc", &Oscillator<double>::GetOsc);
+        .def_property_readonly("osc", &Oscillator<double>::GetOsc)
+        .def(
+            "__call__", &Oscillator<double>::Output, "Oscillator compute voltage output.",
+            py::arg("time"), py::arg("freq")
+        );
 
     py::enum_<Oscillator<double>::Style>(osc, "Style")
         .value("SIN", Oscillator<double>::Style::SIN)

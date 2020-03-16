@@ -26,6 +26,11 @@ $
 $ # Build shared obj lib/libwavedream.so
 $ make shared
 $
-$ # Build python3 module lib/wavdream
+$ # Build python3 module lib/wavedream.cpython-38-x86_64-linux-gnu.so
 $ make module
 ```
+
+## Usage
+
+After install and compiling the python module:
+- **See `test_440.py file` example**

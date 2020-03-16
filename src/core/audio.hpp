@@ -1,9 +1,10 @@
 #pragma once
 
 #include <soundio/soundio.h>
+#include <functional>
 #include <iostream>
-#include <cmath>
 #include <thread>
+#include <cmath>
 
 #define ERROR_MSG(msg) { std::cout << msg << std::endl; exit(1); }
 #define ERROR_CODE(msg, err) { \
@@ -14,14 +15,12 @@ namespace wavedream {
 
     template<typename T>
     class Audio {
-        typedef T (*ProcessCallback)(T dt);
-        
         private:
             static Audio<T> *_instance;
             Audio() {};
             ~Audio();
 
-            ProcessCallback _callback;
+            std::function<T(T)> _callback;
             std::thread _thread;
 
             int _device_idx;
@@ -37,10 +36,10 @@ namespace wavedream {
             T Clamp(T x, T lo=-1.0, T hi=1.0) { return std::min(std::max(x, lo), hi); }
             int16_t Convert(T x) { return x * ((T) INT16_MAX - (T) INT16_MIN) / 2; }
  
-            void AttachProcessCallback(ProcessCallback callback) { 
+            void AttachProcessCallback(std::function<T(T)> &callback) { 
                 this->_callback = callback; 
             }
-            ProcessCallback GetProcessCallback(void) { return this->_callback; }
+            std::function<T(T)> GetProcessCallback(void) { return this->_callback; }
 
             void Init(void);
             void Run(void);
@@ -134,7 +133,7 @@ namespace wavedream {
 
             for(int frame = 0; frame < frames_left; frame++) {
                 Audio<T> *audio = Audio<T>::GetInstance();  
-                Audio<T>::ProcessCallback callback = audio->GetProcessCallback();
+                std::function<T(T)> callback = audio->GetProcessCallback();
                 
                 T signal = audio->Clamp(callback(DT_PER_FRAME));
                 int16_t sample = audio->Convert(signal);

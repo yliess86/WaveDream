@@ -2,7 +2,8 @@
     "files.associations": {
         "iostream": "cpp",
         "new": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "functional": "cpp"
     },
     "python.pythonPath": "python3",
     "editor.rulers": [
