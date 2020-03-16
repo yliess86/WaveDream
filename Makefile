@@ -32,8 +32,7 @@ module:
 	$(MKDIR) lib
 	$(CXX) -O3 -Wall $(SHARED) $(FPIC) \
 		$(PYBIND_INCLUDES) \
-		$(BINDING) -o $(PYBIND_LIB) \
-		$(PYBIND_CONFIG)
+		$(BINDING) -o $(PYBIND_LIB)$(PYBIND_CONFIG) $(LDLIBS)
 
 clean:
 	$(RM) build
