@@ -37,7 +37,7 @@ namespace wavedream {
             T Clamp(T x, T lo=-1.0, T hi=1.0) { return std::min(std::max(x, lo), hi); }
             int16_t Convert(T x) { return x * ((T) INT16_MAX - (T) INT16_MIN) / 2; }
  
-            void SetProcessCallback(ProcessCallback callback) { 
+            void AttachProcessCallback(ProcessCallback callback) { 
                 this->_callback = callback; 
             }
             ProcessCallback GetProcessCallback(void) { return this->_callback; }

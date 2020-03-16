@@ -25,6 +25,15 @@ namespace wavedream {
                 _timbre(timbre), _adsr(adsr), _volume(volume) {}
             Instrument(T volume): _volume(volume) {}
 
+            Timbre<T>* GetTimbre(void) { return this->_timbre; }
+            void SetTimbre(Timbre<T> *timbre) { this->_timbre = timbre; }
+
+            ADSR<T>* GetADSR(void) { return this->_adsr; }
+            void SetADSR(ADSR<T> *adsr) { this->_adsr = adsr; }
+
+            T GetVolume(void) { return this->_volume; }
+            void SetVolume(T volume) { this->_volume = volume; }
+
             void NoteOn(T time, int id);
             void NoteOff(T time, int id);
 

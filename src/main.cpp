@@ -7,24 +7,25 @@
 #include "core/timbre.hpp"
 #include "core/adsr.hpp"
 #include "core/instrument.hpp"
+namespace wa = wavedream;
 
 template<typename T>
-class Harmonica: public wavedream::Instrument<T> {
+class Harmonica: public wa::Instrument<T> {
     public:
-        Harmonica(T volume): wavedream::Instrument<T>(volume) {
-            this->_timbre = new wavedream::Timbre<T>();
-            this->_timbre->AddFormant(wavedream::SIN,      (T) 1.00, 0);
-            this->_timbre->AddFormant(wavedream::SAWTOOTH, (T) 0.50, +12);
-            this->_timbre->AddFormant(wavedream::NOISE,    (T) 0.25, 0);
+        Harmonica(T volume): wa::Instrument<T>(volume) {
+            this->_timbre = new wa::Timbre<T>();
+            this->_timbre->AddFormant(wa::Oscillator<T>::Style::SIN,      (T) 1.00, 0);
+            this->_timbre->AddFormant(wa::Oscillator<T>::Style::SAWTOOTH, (T) 0.50, +12);
+            this->_timbre->AddFormant(wa::Oscillator<T>::Style::NOISE,    (T) 0.25, 0);
 
-            this->_adsr = new wavedream::ADSR<T>(0.0, 1.0, 0.95, 0.1);        
+            this->_adsr = new wa::ADSR<T>(0.0, 1.0, 0.95, 0.1);        
         }
 };
 
-static wavedream::Audio<FTYPE> *audio;
+static wa::Audio<FTYPE> *audio;
 
 static Harmonica<FTYPE>* harmonica = new Harmonica<FTYPE>(0.5);
-static wavedream::Clock<FTYPE> *oclock = new wavedream::Clock<FTYPE>();;
+static wa::Clock<FTYPE> *oclock = new wa::Clock<FTYPE>();;
 
 static FTYPE Update(FTYPE dt) {
     oclock->Update(dt);
@@ -33,8 +34,8 @@ static FTYPE Update(FTYPE dt) {
 }
 
 int main(int argc, char **argv) {
-    audio = wavedream::Audio<FTYPE>::GetInstance();
-    audio->SetProcessCallback(Update);
+    audio = wa::Audio<FTYPE>::GetInstance();
+    audio->AttachProcessCallback(Update);
     audio->Init();
     audio->Run();
 

@@ -7,8 +7,6 @@
 
 namespace wavedream {
 
-    enum OcillatorType { SIN, SQUARE, TRIANGLE, SAWTOOTH, NOISE };
-
     template<typename T>
     class Oscillator {
         private:
@@ -17,7 +15,16 @@ namespace wavedream {
             T _W(T freq) { return TWO_PI * freq; }
 
         public:
+            enum Style { 
+                SIN, 
+                SQUARE, 
+                TRIANGLE, 
+                SAWTOOTH, 
+                NOISE
+            };
+            
             Oscillator(int osc) : _osc(osc) {}
+            int GetOsc(void) { return this->_osc; }
 
             T Output(T time, T freq);
     };
@@ -27,16 +34,16 @@ namespace wavedream {
         T w = this->_W(freq);
 
         switch (this->_osc) {
-            case SIN:
+            case Style::SIN:
                 return sin(w * time);
 
-            case SQUARE:
+            case Style::SQUARE:
                 return sin(w * time) > 0 ? 1.0: -1.0;
 
-            case TRIANGLE:
+            case Style::TRIANGLE:
                 return asin(sin(w * time)) * PI_O_TWO;
 
-            case SAWTOOTH: {
+            case Style::SAWTOOTH: {
                 
                 T out = 0.0;
                 for (T n = 1.0; n < 50.0; n++)
@@ -45,7 +52,7 @@ namespace wavedream {
                 return out * TWO_O_PI;
             }
 
-            case NOISE:
+            case Style::NOISE:
                 return 2.0 * ((T) rand() / (T) RAND_MAX) - 1.0;
 
             default:
