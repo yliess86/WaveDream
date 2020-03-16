@@ -18,4 +18,4 @@ audio.init()
 audio.run()
 
 time.sleep(4)
-aduio.stop()
+audio.stop()

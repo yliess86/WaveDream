@@ -1,4 +1,5 @@
 #include <iostream>
+#include <functional>
 
 #include "core/const.hpp"
 #include "core/audio.hpp"
@@ -34,8 +35,10 @@ static FTYPE Update(FTYPE dt) {
 }
 
 int main(int argc, char **argv) {
+    std::function<FTYPE(FTYPE)> callback = Update; 
+
     audio = wa::Audio<FTYPE>::GetInstance();
-    audio->AttachProcessCallback(Update);
+    audio->AttachProcessCallback(callback);
     audio->Init();
     audio->Run();
 
