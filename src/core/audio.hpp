@@ -22,6 +22,7 @@ namespace wavedream {
 
             std::function<T(T)> _callback;
             std::thread _thread;
+            bool _running = false;
 
             int _device_idx;
             struct SoundIo *_soundio;
@@ -99,18 +100,21 @@ namespace wavedream {
     }
 
     template<typename T>
-    void Audio<T>::Run(void) { 
-        _thread = std::thread(&Audio::Process, this);
+    void Audio<T>::Run(void) {
+        this->_running = true; 
+        this->_thread = std::thread(&Audio::Process, this);
     }
 
     template<typename T>
     void Audio<T>::Process(void) { 
-        while(true) soundio_wait_events(this->_soundio);
+        while(this->_running) soundio_wait_events(this->_soundio);
     }
 
     template<typename T>
-    void Audio<T>::Stop(void) { 
-        _thread.join();
+    void Audio<T>::Stop(void) {
+        this->_running = false;
+        soundio_wakeup(this->_soundio); 
+        this->_thread.join();
     }
 
     template<typename T>
