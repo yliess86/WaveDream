@@ -7,6 +7,8 @@ namespace wavedream {
     #define TWO_O_PI    0.636619772367581
     #define PI_O_TWO    1.570796326794897
 
+    #define A0          27.5
+    #define A1          55
     #define A2          110
     #define A3          220
     #define A4          440

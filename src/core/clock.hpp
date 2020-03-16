@@ -16,7 +16,7 @@ namespace wavedream {
             
             void SetSpeed(T speed) { this->_speed = speed; }
             
-            void Update(T dt) { this->_time += dt * this->_speed; }
+            T Update(T dt) { this->_time += dt * this->_speed; return this->_time; }
     };
 
 }

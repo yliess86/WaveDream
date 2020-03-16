@@ -1,5 +1,8 @@
+#include <vector>
+
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
+#include <pybind11/stl.h>
 namespace py = pybind11;
 
 #include "core/adsr.hpp"
@@ -13,21 +16,23 @@ namespace py = pybind11;
 using namespace wavedream;
 
 PYBIND11_MODULE(wavedream, m) {
+    std::vector<double> notes;
+    notes.assign(std::begin(NOTES), std::end(NOTES));
+
+    m.attr("NOTES") = notes;
+    m.attr("A0") = A0;
+    m.attr("A1") = A1;
+    m.attr("A2") = A2;
+    m.attr("A3") = A3;
+    m.attr("A4") = A4;
+    m.attr("A5") = A5;
+
     py::class_<Audio<double>, std::unique_ptr<Audio<double>, py::nodelete>>(m, "Audio")
         .def(py::init(&Audio<double>::GetInstance), py::return_value_policy::reference)
         .def("init", &Audio<double>::Init, "Init audio device and outstream.")
         .def("run", &Audio<double>::Run, "Run audio output thread")
         .def("stop", &Audio<double>::Stop, "Stop audio device and outstream.")
-        .def("attach_callback", &Audio<double>::AttachProcessCallback, "Set process callback.")
-        .def("__enter__", [&] (Audio<double>& audio) {
-            Audio<double>* instance = audio.GetInstance();
-            instance->Init();
-            return instance;
-        }, "Enter audio context.")
-        .def("__exit__", [&] (Audio<double>& audio, py::object exc_type, py::object exc_value, py::object traceback) {
-            Audio<double>* instance = audio.GetInstance();
-            instance->Stop();
-        }, "Exit audio context.");
+        .def("attach_callback", &Audio<double>::AttachProcessCallback, "Set process callback.");
 
     py::class_<Clock<double>>(m, "Clock")
         .def(py::init<>())

@@ -10,8 +10,8 @@ oscillator = wa.Oscillator(wa.Oscillator.Style.SIN)
 
 def process_callback(dt: float) -> float:
     global clok, oscillator
-    clock(dt)
-    return oscillator(clock.time, 440)
+    time = clock(dt)
+    return oscillator(time, wa.A4)
 
 audio.attach_callback(process_callback)
 audio.init()
