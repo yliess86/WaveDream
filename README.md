@@ -4,6 +4,12 @@ WaveDream is an experimental Virtual Analog Synthetizer. It is developped using 
 
 Here is a list of the features already developed or in developement for the project:
 - [x] Audio libsoundio Wrapper
+- [x] Oscilators
+    - [x] Sin
+    - [x] Square
+    - [x] Triangle
+    - [x] Analog Sawtooth (Preserve harmonics)
+    - [x] White Noise
 - [x] Formant
 - [x] Timbre
 - [x] ADSR Enveloppe
