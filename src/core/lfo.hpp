@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 #include "osc.hpp"
 
 namespace wavedream {
@@ -18,7 +20,7 @@ namespace wavedream {
             void SetAmount(T amount) { this->_amount = amount; }
 
             T GetRate(void) { return this->_rate; }
-            void SetRate(T rate) { this->_rate = rate; }
+            void SetRate(T rate) { this->_rate = std::min(std::max(rate, (T) 20.0), (T) 0.1); }
 
             Oscillator<T>* GetOsc(void) { return this->_osc; }
             void SetOsc(int osc) { this->_osc = new Oscillator<T>(osc); }
@@ -27,7 +29,8 @@ namespace wavedream {
     };
 
     template<typename T>
-    LFO<T>::LFO(int osc, T amount, T rate): _amount(amount), _rate(rate) {
+    LFO<T>::LFO(int osc, T amount, T rate): _amount(amount) {
+        this->_amount = std::min(std::max(rate, (T) 20.0), (T) 0.1);
         this->_osc = new Oscillator<T>(osc);    
     }
 

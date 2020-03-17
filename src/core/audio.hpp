@@ -33,6 +33,7 @@ namespace wavedream {
 
         public:
             static Audio<T>* GetInstance(void);
+            int GetSampleRate(void) { return this->_outstream->sample_rate; }
 
             T Clamp(T x, T lo=-1.0, T hi=1.0) { return std::min(std::max(x, lo), hi); }
             int16_t Convert(T x) { return x * ((T) INT16_MAX - (T) INT16_MIN) / 2; }

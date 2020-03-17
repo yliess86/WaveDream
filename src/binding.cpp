@@ -14,6 +14,7 @@ namespace py = pybind11;
 #include "core/note.hpp"
 #include "core/osc.hpp"
 #include "core/timbre.hpp"
+#include "fx/delay.hpp"
 using namespace wavedream;
 
 PYBIND11_MODULE(wavedream, m) {
@@ -33,7 +34,8 @@ PYBIND11_MODULE(wavedream, m) {
         .def("init",            &Audio<double>::Init,                  "Init audio device and outstream.")
         .def("run",             &Audio<double>::Run,                   "Run audio output thread")
         .def("stop",            &Audio<double>::Stop,                  "Stop audio device and outstream.")
-        .def("attach_callback", &Audio<double>::AttachProcessCallback, "Set process callback.");
+        .def("attach_callback", &Audio<double>::AttachProcessCallback, "Set process callback.")
+        .def_property_readonly("sr", &Audio<double>::GetSampleRate);
 
     py::class_<Clock<double>>(m, "Clock")
         .def(py::init<>())
@@ -119,5 +121,14 @@ PYBIND11_MODULE(wavedream, m) {
         .def(
             "__call__", &Instrument<double>::Output, "Instrument compute voltage output.", 
             py::arg("time")
+        );
+
+    py::class_<Delay<double>>(m, "Delay")
+        .def(py::init<int, double, double>())
+        .def_property("delay", &Delay<double>::GetDelay,    &Delay<double>::SetDelay)
+        .def_property("delay", &Delay<double>::GetFeedback, &Delay<double>::SetFeedback)
+        .def(
+            "__call__", &Delay<double>::Output, "Delayed signal.",
+            py::arg("signal")
         );
 }

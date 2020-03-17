@@ -18,7 +18,7 @@ Here is a list of the features already developed or in developement for the proj
 - [x] Instrument
 - [ ] FXs
     - [ ] Reverb
-    - [ ] Delay
+    - [x] Delay
     - [ ] Distortion
     - [ ] Filters
 - [ ] Inputs
@@ -27,6 +27,7 @@ Here is a list of the features already developed or in developement for the proj
 
 Known issues:
 - [ ] Python module does not always quite when `audio.stop()` is called
+- [ ] May Initialize callback after `audio.Init()` to get *sample rate*
 
 ## Install
 
