@@ -13,7 +13,7 @@ Here is a list of the features already developed or in developement for the proj
 - [x] Formant
 - [x] Timbre
 - [x] ADSR Enveloppe
-- [ ] LFO modulation
+- [x] LFO modulation
 - [x] Note
 - [x] Instrument
 - [ ] FXs
@@ -24,6 +24,9 @@ Here is a list of the features already developed or in developement for the proj
 - [ ] Inputs
     - [ ] Keyboard Inputs
     - [ ] MIDI Controller
+
+Known issues:
+- [ ] Python module does not always quite when `audio.stop()` is called
 
 ## Install
 

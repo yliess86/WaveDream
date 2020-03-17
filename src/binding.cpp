@@ -10,6 +10,7 @@ namespace py = pybind11;
 #include "core/clock.hpp"
 #include "core/const.hpp"
 #include "core/instrument.hpp"
+#include "core/lfo.hpp"
 #include "core/note.hpp"
 #include "core/osc.hpp"
 #include "core/timbre.hpp"
@@ -66,6 +67,16 @@ PYBIND11_MODULE(wavedream, m) {
         .value("SAWTOOTH", Oscillator<double>::Style::SAWTOOTH)
         .value("NOISE",    Oscillator<double>::Style::NOISE)
         .export_values();
+
+    py::class_<LFO<double>>(m, "LFO")
+        .def(py::init<int, double, double>())
+        .def_property("amount", &LFO<double>::GetAmount, &LFO<double>::SetAmount)
+        .def_property("rate",   &LFO<double>::GetRate,   &LFO<double>::SetRate)
+        .def_property("osc",    &LFO<double>::GetOsc,    &LFO<double>::SetOsc)
+        .def(
+            "__call__", &LFO<double>::Output, "LFO compute voltage output",
+            py::arg("time")
+        );
 
     py::class_<Formant<double>>(m, "Formant")
         .def(py::init<Oscillator<double>*, double, int>())

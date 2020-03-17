@@ -2,6 +2,7 @@
 
 #include <map>
 #include <vector>
+#include <mutex>
 
 #include "timbre.hpp"
 #include "note.hpp"
@@ -19,6 +20,7 @@ namespace wavedream {
         
         private:
             std::map<int, std::vector<Note<T>>> _notes;
+            std::mutex _lock;
 
         public:
             Instrument(Timbre<T> *timbre, ADSR<T> *adsr, T volume):
@@ -47,6 +49,7 @@ namespace wavedream {
 
         T signal = (T) 0.0;
 
+        this->_lock.lock();
         for (auto&& [note_id, note_vec]: this->_notes) {
             to_clean = 0;
             
@@ -60,6 +63,7 @@ namespace wavedream {
 
             if(to_clean > 0) note_vec.erase(note_vec.begin(), note_vec.begin() + to_clean);
         }
+        this->_lock.unlock();
 
         return this->_volume * signal;
     }
@@ -67,17 +71,21 @@ namespace wavedream {
     template<typename T>
     void Instrument<T>::NoteOn(T time, int id) {
         Note<T> note = Note<T>(id, time);
+        this->_lock.lock();
         this->_notes[note.id].push_back(note);
+        this->_lock.unlock();
     }
 
     template<typename T>
     void Instrument<T>::NoteOff(T time, int id) {
+        this->_lock.lock();
         for(auto&& note: this->_notes[id]) {
             if(note.active && note.off <= 0.0) {
                 note.off = time;
                 break;
             }
         }
+        this->_lock.unlock();
     }
 
 }
