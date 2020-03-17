@@ -107,7 +107,10 @@ namespace wavedream {
 
     template<typename T>
     void Audio<T>::Process(void) { 
-        while(this->_running) soundio_wait_events(this->_soundio);
+        while(this->_running) {
+            soundio_wait_events(this->_soundio);
+            soundio_wakeup(this->_soundio);
+        }
     }
 
     template<typename T>

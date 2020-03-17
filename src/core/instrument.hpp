@@ -23,7 +23,6 @@ namespace wavedream {
         public:
             Instrument(Timbre<T> *timbre, ADSR<T> *adsr, T volume):
                 _timbre(timbre), _adsr(adsr), _volume(volume) {}
-            Instrument(T volume): _volume(volume) {}
 
             Timbre<T>* GetTimbre(void) { return this->_timbre; }
             void SetTimbre(Timbre<T> *timbre) { this->_timbre = timbre; }
@@ -37,7 +36,7 @@ namespace wavedream {
             void NoteOn(T time, int id);
             void NoteOff(T time, int id);
 
-            T Output(T time);
+            virtual T Output(T time);
     };
 
     template<typename T>
