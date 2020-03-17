@@ -7,17 +7,17 @@ Here is a list of the features already developed or in developement for the proj
 - [x] Formant
 - [x] Timbre
 - [x] ADSR Enveloppe
-- [] LFO modulation
+- [ ] LFO modulation
 - [x] Note
 - [x] Instrument
-- [] FXs
-    - [] Reverb
-    - [] Delay
-    - [] Distortion
-    - [] Filters
-- [] Inputs
-    - [] Keyboard Inputs
-    - [] MIDI Controller
+- [ ] FXs
+    - [ ] Reverb
+    - [ ] Delay
+    - [ ] Distortion
+    - [ ] Filters
+- [ ] Inputs
+    - [ ] Keyboard Inputs
+    - [ ] MIDI Controller
 
 ## Install
 
