@@ -31,7 +31,7 @@ $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-$ make install
+$ (sudo) make install
 ```
 
 Build library:
@@ -39,14 +39,11 @@ Build library:
 $ # Clean build directories
 $ make clean
 $
-$ # Build example .build/wavedream
-$ make build
-$
-$ # Build shared obj lib/libwavedream.so
-$ make shared
-$
 $ # Build python3 module lib/wavedream.cpython-38-x86_64-linux-gnu.so
 $ make module
+$
+$ # Clean and build python3 module
+$ make all
 ```
 
 ## Usage
