@@ -73,7 +73,7 @@ namespace wavedream {
     template<typename T>
     void Instrument<T>::NoteOff(T time, int id) {
         for(auto&& note: this->_notes[id]) {
-            if(note.active) {
+            if(note.active && note.off <= 0.0) {
                 note.off = time;
                 break;
             }
