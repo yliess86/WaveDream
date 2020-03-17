@@ -1,5 +1,24 @@
 # WaveDream
 
+WaveDream is an experimental Virtual Analog Synthetizer. It is developped using C++ for performance and compiled as a python module using the pybind11 library for easy usage.
+
+Here is a list of the features already developed or in developement for the project:
+- [x] Audio libsoundio Wrapper
+- [x] Formant
+- [x] Timbre
+- [x] ADSR Enveloppe
+- [] LFO modulation
+- [x] Note
+- [x] Instrument
+- [] FXs
+    - [] Reverb
+    - [] Delay
+    - [] Distortion
+    - [] Filters
+- [] Inputs
+    - [] Keyboard Inputs
+    - [] MIDI Controller
+
 ## Install
 
 Install all requirements (may require sudo):
@@ -32,5 +51,4 @@ $ make module
 
 ## Usage
 
-After install and compiling the python module:
-- **See `test_440.py file` example**
+After install and compiling the python module you'll find some example usage of the library in the `examples` folder.
