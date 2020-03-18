@@ -5,18 +5,23 @@
 #include <pybind11/stl.h>
 namespace py = pybind11;
 
-#include "core/adsr.hpp"
 #include "core/audio.hpp"
 #include "core/clock.hpp"
 #include "core/const.hpp"
-#include "core/instrument.hpp"
 #include "core/lfo.hpp"
-#include "core/note.hpp"
 #include "core/osc.hpp"
-#include "core/timbre.hpp"
-#include "fx/delay.hpp"
-using namespace wavedream;
 
+#include "instrument/adsr.hpp"
+#include "instrument/instrument.hpp"
+#include "instrument/note.hpp"
+#include "instrument/timbre.hpp"
+
+#include "fx/allpassfilter.hpp"
+#include "fx/delay.hpp"
+#include "fx/lowpasssinglepole.hpp"
+#include "fx/reverb.hpp"
+
+using namespace wavedream;
 PYBIND11_MODULE(wavedream, m) {
     std::vector<double> notes;
     notes.assign(std::begin(NOTES), std::end(NOTES));
@@ -125,10 +130,35 @@ PYBIND11_MODULE(wavedream, m) {
 
     py::class_<Delay<double>>(m, "Delay")
         .def(py::init<int, double, double>())
-        .def_property("delay", &Delay<double>::GetDelay,    &Delay<double>::SetDelay)
-        .def_property("delay", &Delay<double>::GetFeedback, &Delay<double>::SetFeedback)
+        .def_property("delay",    &Delay<double>::GetDelay,    &Delay<double>::SetDelay)
+        .def_property("feedback", &Delay<double>::GetFeedback, &Delay<double>::SetFeedback)
         .def(
             "__call__", &Delay<double>::Output, "Delayed signal.",
+            py::arg("signal")
+        );
+
+    py::class_<AllPassFilter<double>>(m, "AllPassFilter")
+        .def(py::init<int, double, double>())
+        .def_property("delay",    &AllPassFilter<double>::GetDelay,    &AllPassFilter<double>::SetDelay)
+        .def_property("feedback", &AllPassFilter<double>::GetFeedback, &AllPassFilter<double>::SetFeedback)
+        .def(
+            "__call__", &AllPassFilter<double>::Output, "All passed filtered signal.",
+            py::arg("signal")
+        );
+
+    py::class_<LowPassSinglePole<double>>(m, "LowPassSinglePole")
+        .def(py::init<double>())
+        .def_property("damp", &LowPassSinglePole<double>::GetDamp, &LowPassSinglePole<double>::SetDamp)
+        .def(
+            "__call__", &LowPassSinglePole<double>::Output, "Low passed single pole signal.",
+            py::arg("signal")
+        );
+
+    py::class_<Reverb<double>>(m, "Reverb")
+        .def(py::init<int, double>())
+        .def_property("wet", &Reverb<double>::GetWet, &Reverb<double>::SetWet)
+        .def(
+            "__call__", &Reverb<double>::Output, "Reverbed signal.",
             py::arg("signal")
         );
 }

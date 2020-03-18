@@ -7,7 +7,7 @@
 #include "timbre.hpp"
 #include "note.hpp"
 #include "adsr.hpp"
-#include "const.hpp"
+#include "../core/const.hpp"
 
 namespace wavedream {
 

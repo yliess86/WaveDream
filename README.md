@@ -17,7 +17,7 @@ Here is a list of the features already developed or in developement for the proj
 - [x] Note
 - [x] Instrument
 - [ ] FXs
-    - [ ] Reverb
+    - [x] Reverb
     - [x] Delay
     - [ ] Distortion
     - [ ] Filters

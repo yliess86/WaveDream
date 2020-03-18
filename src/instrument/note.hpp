@@ -1,6 +1,6 @@
 #pragma once
 
-#include "const.hpp"
+#include "../core/const.hpp"
 
 namespace wavedream {
 

@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "osc.hpp"
-#include "const.hpp"
+#include "../core/osc.hpp"
+#include "../core/const.hpp"
 
 namespace wavedream {
 
