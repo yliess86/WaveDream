@@ -12,15 +12,24 @@ namespace wavedream {
     class Reverb {
         private:
             int _sr;
+            T _gain;
+            T _feedback;
             T _wet;
             T _dry;
 
-            std::vector<Delay<T>> _combs;
             std::vector<LowPassSinglePole<T>> _lowpassfilters;
+            std::vector<Delay<T>> _combs;
             std::vector<AllPassFilter<T>> _allpassfilters;
 
         public:
-            Reverb(int sr, T wet);
+            Reverb(int sr, T gain, T feedback, T wet);
+            Reverb(int sr, T gain, T wet): Reverb(sr, gain, (T) 0.84, wet) {}
+
+            T GetGain(void) { return this->_gain; }
+            void SetGain(T gain) { this->_gain = gain; }
+
+            T GetFeedback(void) { return this->_feedback; }
+            void SetFeedback(T feedback) { this->_feedback = feedback; }
 
             T GetWet(void) { return this->_wet; }
             void SetWet(T wet) { this->_wet = wet; this->_dry = (T) 1.0 - wet; }
@@ -29,29 +38,31 @@ namespace wavedream {
     };
 
     template<typename T>
-    Reverb<T>::Reverb(int sr, T wet): _sr(sr), _wet(wet), _dry((T) 1.0 - wet) {
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03531, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03667, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03381, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03224, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02896, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03075, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02694, (T) 0.84));
-        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02531, (T) 0.84));
+    Reverb<T>::Reverb(int sr, T gain, T feedback, T wet): 
+        _sr(sr), _gain(gain), _feedback(feedback), _wet(wet), _dry((T) 1.0 - wet) {
+        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
+        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
+        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
+        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
 
-        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.00510, (T) 0.50));
-        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.01261, (T) 0.50));
-        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.01000, (T) 0.50));
-        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.00773, (T) 0.50));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03531, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03667, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03381, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03224, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02896, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.03075, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02694, (T) this->_feedback));
+        this->_combs.push_back(                 Delay<T>(sr, (T) 0.02531, (T) this->_feedback));
 
-        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
-        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
-        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
-        this->_lowpassfilters.push_back(LowPassSinglePole<T>(.2));
+        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.00510, (T) (this->_feedback * 0.59523)));
+        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.01261, (T) (this->_feedback * 0.59523)));
+        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.01000, (T) (this->_feedback * 0.59523)));
+        this->_allpassfilters.push_back(AllPassFilter<T>(sr, (T) 0.00773, (T) (this->_feedback * 0.59523)));
     }
 
     template<typename T>
     T Reverb<T>::Output(T signal) {
+        signal = signal * this->_gain;
         T out = (T) 0.0;
         
         long unsigned int n = (long unsigned int) (this->_combs.size() * 0.5);

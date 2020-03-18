@@ -29,12 +29,12 @@ class Harmonica:
 audio = wa.Audio()
 clock = wa.Clock()
 harmonica = Harmonica(0.5)
-reverb = wa.Reverb(48000, 1.0)
+reverb = wa.Reverb(48000, gain=0.2, feedback=0.84, wet=1.0)
 
 
 def process_callback(dt: float) -> float:
     global clok, oscillator
-    return 0.2 * reverb(harmonica(clock(dt)))
+    return reverb(harmonica(clock(dt)))
 
 
 notes = [

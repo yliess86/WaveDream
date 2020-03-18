@@ -155,8 +155,11 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<Reverb<double>>(m, "Reverb")
-        .def(py::init<int, double>())
-        .def_property("wet", &Reverb<double>::GetWet, &Reverb<double>::SetWet)
+        .def(py::init<int, double, double, double>(), py::arg("sr"), py::arg("gain"), py::arg("feedback"), py::arg("wet"))
+        .def(py::init<int, double, double>(), py::arg("sr"), py::arg("gain"), py::arg("wet"))
+        .def_property("gain",     &Reverb<double>::GetGain,     &Reverb<double>::SetGain)
+        .def_property("feedback", &Reverb<double>::GetFeedback, &Reverb<double>::SetFeedback)
+        .def_property("wet",      &Reverb<double>::GetWet,      &Reverb<double>::SetWet)
         .def(
             "__call__", &Reverb<double>::Output, "Reverbed signal.",
             py::arg("signal")
