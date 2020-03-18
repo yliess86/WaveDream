@@ -18,6 +18,7 @@ namespace py = pybind11;
 
 #include "fx/allpassfilter.hpp"
 #include "fx/delay.hpp"
+#include "fx/distortion.hpp"
 #include "fx/lowpasssinglepole.hpp"
 #include "fx/reverb.hpp"
 
@@ -162,6 +163,15 @@ PYBIND11_MODULE(wavedream, m) {
         .def_property("wet",      &Reverb<double>::GetWet,      &Reverb<double>::SetWet)
         .def(
             "__call__", &Reverb<double>::Output, "Reverbed signal.",
+            py::arg("signal")
+        );
+
+    py::class_<Distortion<double>>(m, "Distortion")
+        .def(py::init<double, double>())
+        .def_property("drive", &Distortion<double>::GetDrive, &Distortion<double>::SetDrive)
+        .def_property("mix",   &Distortion<double>::GetMix,   &Distortion<double>::SetMix)
+        .def(
+            "__call__", &Distortion<double>::Output, "Distorted signal.",
             py::arg("signal")
         );
 }

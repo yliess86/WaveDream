@@ -19,7 +19,7 @@ Here is a list of the features already developed or in developement for the proj
 - [ ] FXs
     - [x] Reverb
     - [x] Delay
-    - [ ] Distortion
+    - [x] Distortion
     - [ ] Filters
         - [x] All Pass Filter
         - [x] Low Pass Single Pole Filter
