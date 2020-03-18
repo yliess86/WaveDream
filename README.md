@@ -16,7 +16,7 @@ Here is a list of the features already developed or in developement for the proj
 - [x] LFO modulation
 - [x] Note
 - [x] Instrument
-- [ ] FXs
+- [x] FXs
     - [x] Reverb
     - [x] Delay
     - [x] Distortion
@@ -65,3 +65,7 @@ $ make all
 ## Usage
 
 After install and compiling the python module you'll find some example usage of the library in the `examples` folder.
+
+## Dependencies
+
+- libsoundio [SoundIO](http://libsound.io/)
