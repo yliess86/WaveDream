@@ -131,7 +131,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<Delay<double>>(m, "Delay")
-        .def(py::init<int, double, double>())
+        .def(py::init<int, double, double>(), py::arg("sr"), py::arg("delay"), py::arg("feedback"))
         .def_property("delay",    &Delay<double>::GetDelay,    &Delay<double>::SetDelay)
         .def_property("feedback", &Delay<double>::GetFeedback, &Delay<double>::SetFeedback)
         .def(
@@ -168,7 +168,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<Distortion<double>>(m, "Distortion")
-        .def(py::init<double, double>())
+        .def(py::init<double, double>(), py::arg("drive"), py::arg("mix"))
         .def_property("drive", &Distortion<double>::GetDrive, &Distortion<double>::SetDrive)
         .def_property("mix",   &Distortion<double>::GetMix,   &Distortion<double>::SetMix)
         .def(

@@ -52,7 +52,7 @@ namespace wavedream {
             amplitude = ((time - time_off) / this->_release_time) * (0.0 - release_amplitude) + release_amplitude;
         }
 
-        return (amplitude <= 0.01)? 0.0: amplitude;
+        return (amplitude <= 0.001)? 0.0: amplitude;
     }
 
 }

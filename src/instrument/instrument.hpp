@@ -57,7 +57,7 @@ namespace wavedream {
                 timbre = this->_timbre->Output(time, note_id);
                 envelope = this->_adsr->Envelope(time, note.on, note.off);
                 signal += timbre * envelope;
-                if(envelope == 0) note.active = false;
+                if(envelope == 0 && note.off > 0.0) note.active = false;
                 if(!note.active) to_clean++;
             }
 
