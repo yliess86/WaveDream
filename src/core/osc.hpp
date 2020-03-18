@@ -16,7 +16,7 @@ namespace wavedream {
 
         public:
             enum Style { 
-                SIN, 
+                SIN = 0, 
                 SQUARE, 
                 TRIANGLE, 
                 SAWTOOTH, 

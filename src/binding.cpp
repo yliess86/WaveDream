@@ -19,6 +19,7 @@ namespace py = pybind11;
 #include "fx/allpassfilter.hpp"
 #include "fx/delay.hpp"
 #include "fx/distortion.hpp"
+#include "fx/filter.hpp"
 #include "fx/lowpasssinglepole.hpp"
 #include "fx/reverb.hpp"
 
@@ -174,4 +175,23 @@ PYBIND11_MODULE(wavedream, m) {
             "__call__", &Distortion<double>::Output, "Distorted signal.",
             py::arg("signal")
         );
+
+    py::class_<Filter<double>> filter(m, "Filter");
+
+    filter.def(py::init<int, int, double, double>(), py::arg("filter"), py::arg("order"), py::arg("cutoff"), py::arg("resonance"))
+        .def_property("filter",    &Filter<double>::GetFilter,    &Filter<double>::SetFilter)
+        .def_property("order",     &Filter<double>::GetOrder,     &Filter<double>::SetOrder)
+        .def_property("cutoff",    &Filter<double>::GetCutOff,    &Filter<double>::SetCutoff)
+        .def_property("resonance", &Filter<double>::GetResonance, &Filter<double>::SetResonance)
+        .def_property_readonly("feedback", &Filter<double>::GetFeedback)
+        .def(
+            "__call__", &Filter<double>::Output, "Filtered output.",
+            py::arg("signal")
+        );
+
+    py::enum_<Filter<double>::Mode>(filter, "Mode")
+        .value("LOW_PASS",  Filter<double>::Mode::LOW_PASS)
+        .value("HIGH_PASS", Filter<double>::Mode::HIGH_PASS)
+        .value("BAND_PASS", Filter<double>::Mode::BAND_PASS)
+        .export_values();
 }

@@ -23,9 +23,9 @@ Here is a list of the features already developed or in developement for the proj
     - [ ] Filters
         - [x] All Pass Filter
         - [x] Low Pass Single Pole Filter
-        - [ ] Low Pass Filter 
-        - [ ] High Pass Filter 
-        - [ ] Pass Band Filter 
+        - [x] Low Pass Filter 
+        - [x] High Pass Filter 
+        - [x] Band Pass Filter 
 - [ ] Inputs
     - [ ] Keyboard Inputs
     - [ ] MIDI Controller

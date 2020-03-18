@@ -3,7 +3,13 @@
         "iostream": "cpp",
         "new": "cpp",
         "thread": "cpp",
-        "functional": "cpp"
+        "functional": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "forward_list": "cpp",
+        "list": "cpp",
+        "vector": "cpp",
+        "string_view": "cpp"
     },
     "python.pythonPath": "python3",
     "editor.rulers": [
