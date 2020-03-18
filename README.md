@@ -20,7 +20,7 @@ Here is a list of the features already developed or in developement for the proj
     - [x] Reverb
     - [x] Delay
     - [x] Distortion
-    - [ ] Filters
+    - [x] Filters
         - [x] All Pass Filter
         - [x] Low Pass Single Pole Filter
         - [x] Low Pass Filter 
@@ -33,6 +33,7 @@ Here is a list of the features already developed or in developement for the proj
 Known issues:
 - [ ] Python module does not always quite when `audio.stop()` is called
 - [ ] May Initialize callback after `audio.Init()` to get *sample rate*
+- [ ] Need better filter implementation
 
 ## Install
 
