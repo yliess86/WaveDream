@@ -21,6 +21,11 @@ Here is a list of the features already developed or in developement for the proj
     - [x] Delay
     - [ ] Distortion
     - [ ] Filters
+        - [x] All Pass Filter
+        - [x] Low Pass Single Pole Filter
+        - [ ] Low Pass Filter 
+        - [ ] High Pass Filter 
+        - [ ] Pass Band Filter 
 - [ ] Inputs
     - [ ] Keyboard Inputs
     - [ ] MIDI Controller
