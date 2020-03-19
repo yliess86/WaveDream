@@ -13,7 +13,7 @@ class Harmonica:
         self.timbre = wa.Timbre()
         self.timbre.add_formant(wa.Oscillator.Style.TRIANGLE, 1.00,  0)
         self.timbre.add_formant(wa.Oscillator.Style.TRIANGLE, 0.50, 12)
-        self.adsr = wa.ADSR(0.3, 1.0, 0.0, 0.0)
+        self.adsr = wa.ADSR(0.0, 0.2, 0.0, 0.0)
         self.volume = volume
         
         self.instrument = wa.Instrument(self.timbre, self.adsr, volume)
@@ -44,7 +44,7 @@ class Arpegiator:
             time.sleep(self.delay)
 
 
-arpegiator = Arpegiator([69, 67, 72, 65], 0.50)
+arpegiator = Arpegiator([69, 67, 72, 65], 0.125)
 
 audio = wa.Audio()
 clock = wa.Clock()

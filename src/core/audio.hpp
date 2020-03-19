@@ -52,6 +52,10 @@ namespace wavedream {
                 int frame_min, 
                 int frame_max
             );
+            static void Underflow(struct SoundIoOutStream *outstream) {
+                static int count = 0;
+                std::cout << "Underflow: " << count++ << std::endl;
+            }
     };
 
     template<typename T>
@@ -91,6 +95,7 @@ namespace wavedream {
         
         this->_outstream->format = SoundIoFormatS16NE;
         this->_outstream->write_callback = Audio<T>::Callback;
+        this->_outstream->underflow_callback = Audio<T>::Underflow;
 
         if((err = soundio_outstream_open(this->_outstream)))
             ERROR_CODE("Unable to open device: ", err);
@@ -108,7 +113,7 @@ namespace wavedream {
 
     template<typename T>
     void Audio<T>::Process(void) { 
-        while(this->_running) soundio_wait_events(this->_soundio);
+        while(this->_running) soundio_flush_events(this->_soundio);
     }
 
     template<typename T>
@@ -124,19 +129,21 @@ namespace wavedream {
         int frame_min, 
         int frame_max
     ) {  
-        const struct SoundIoChannelLayout *LAYOUT = &outstream->layout;
         const T DT_PER_FRAME = (T) 1.0 / (T) outstream->sample_rate;
         struct SoundIoChannelArea *areas;
         
         int frames_left = frame_max;
         int err;
 
-        while(frames_left > 0) {
-            if((err = soundio_outstream_begin_write(outstream, &areas, &frames_left)))
+        while(true) {
+            int frame_count = frames_left;
+            if((err = soundio_outstream_begin_write(outstream, &areas, &frame_count)))
                 ERROR_CODE("", err);
-            if(!frames_left) break;
+            if(!frame_count) break;
+            
+            const struct SoundIoChannelLayout *LAYOUT = &outstream->layout;
 
-            for(int frame = 0; frame < frames_left; frame++) {
+            for(int frame = 0; frame < frame_count; frame++) {
                 Audio<T> *audio = Audio<T>::GetInstance();  
                 std::function<T(T)> callback = audio->GetProcessCallback();
                 
@@ -150,7 +157,8 @@ namespace wavedream {
             }
 
             if((err = soundio_outstream_end_write(outstream))) ERROR_CODE("", err);
-            frames_left -= frames_left;
+            frames_left -= frame_count;
+            if(frames_left <= 0) break;
         }
     }
 

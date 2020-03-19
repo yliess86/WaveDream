@@ -35,6 +35,15 @@ namespace wavedream {
             T GetVolume(void) { return this->_volume; }
             void SetVolume(T volume) { this->_volume = volume; }
 
+            int GetNotesLeft(void) {
+                int size = 0;
+                this->_lock.lock();
+                for (auto& [note_id, note_vec]: this->_notes)
+                    size += note_vec.size();
+                this->_lock.unlock();
+                return size;
+            }
+            
             void NoteOn(T time, int id);
             void NoteOff(T time, int id);
 
@@ -45,23 +54,25 @@ namespace wavedream {
     T Instrument<T>::Output(T time) {
         T timbre;
         T envelope;
-        int to_clean;
-
         T signal = (T) 0.0;
 
         this->_lock.lock();
-        for (auto&& [note_id, note_vec]: this->_notes) {
-            to_clean = 0;
-            
-            for(auto&& note: note_vec) {
-                timbre = this->_timbre->Output(time, note_id);
-                envelope = this->_adsr->Envelope(time, note.on, note.off);
-                signal += timbre * envelope;
-                if(envelope == 0 && note.off > 0.0) note.active = false;
-                if(!note.active) to_clean++;
-            }
+        for(auto map_it: this->_notes) {
+            int id = map_it.first;
+            std::vector<Note<T>> notes = map_it.second;
 
-            if(to_clean > 0) note_vec.erase(note_vec.begin(), note_vec.begin() + to_clean);
+            auto note = notes.begin();
+            while(note != notes.end()) {
+                timbre = this->_timbre->Output(time, id);
+                envelope = this->_adsr->Envelope(time, note->on, note->off);
+                signal += timbre * envelope;
+                
+                if(envelope <= 0.0 && note->off > 0.0) {
+                    note->active = false;
+                    note = notes.erase(note);
+                }
+                else ++note;
+            }
         }
         this->_lock.unlock();
 
@@ -79,7 +90,7 @@ namespace wavedream {
     template<typename T>
     void Instrument<T>::NoteOff(T time, int id) {
         this->_lock.lock();
-        for(auto&& note: this->_notes[id]) {
+        for(auto note: this->_notes[id]) {
             if(note.active && note.off <= 0.0) {
                 note.off = time;
                 break;

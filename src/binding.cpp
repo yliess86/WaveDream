@@ -54,7 +54,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
     
     py::class_<Note<double>>(m, "Note")
-        .def(py::init<int, double>())
+        .def(py::init<int, double>(), py::arg("id"), py::arg("on"))
         .def_readwrite("id",     &Note<double>::id)
         .def_readwrite("on",     &Note<double>::on)
         .def_readwrite("off",    &Note<double>::off)
@@ -78,17 +78,17 @@ PYBIND11_MODULE(wavedream, m) {
         .export_values();
 
     py::class_<LFO<double>>(m, "LFO")
-        .def(py::init<int, double, double>())
+        .def(py::init<int, double, double>(), py::arg("osc"), py::arg("amount"), py::arg("rate"))
+        .def_property("osc",    &LFO<double>::GetOsc,    &LFO<double>::SetOsc)
         .def_property("amount", &LFO<double>::GetAmount, &LFO<double>::SetAmount)
         .def_property("rate",   &LFO<double>::GetRate,   &LFO<double>::SetRate)
-        .def_property("osc",    &LFO<double>::GetOsc,    &LFO<double>::SetOsc)
         .def(
             "__call__", &LFO<double>::Output, "LFO compute voltage output",
             py::arg("time")
         );
 
     py::class_<Formant<double>>(m, "Formant")
-        .def(py::init<Oscillator<double>*, double, int>())
+        .def(py::init<Oscillator<double>*, double, int>(), py::arg("osc"), py::arg("amplitude"), py::arg("note_id_shift"))
         .def_readwrite("osc",           &Formant<double>::osc)
         .def_readwrite("amplitude",     &Formant<double>::amplitude)
         .def_readwrite("note_id_shift", &Formant<double>::note_id_shift);
@@ -106,7 +106,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<ADSR<double>>(m, "ADSR")
-        .def(py::init<double, double, double, double>())
+        .def(py::init<double, double, double, double>(), py::arg("attack"), py::arg("delay"), py::arg("sustain"), py::arg("release"))
         .def(
             "__call__", &ADSR<double>::Envelope, "Get ADSR enveloppe.",
             py::arg("time"), py::arg("time_on"), py::arg("time_off")
@@ -117,6 +117,9 @@ PYBIND11_MODULE(wavedream, m) {
         .def_property("timbre", &Instrument<double>::GetTimbre, &Instrument<double>::SetTimbre)
         .def_property("adsr",   &Instrument<double>::GetADSR,   &Instrument<double>::SetADSR)
         .def_property("volume", &Instrument<double>::GetVolume, &Instrument<double>::SetVolume)
+        .def(
+            "__len__", &Instrument<double>::GetNotesLeft, "Notes left to play."
+        )
         .def(
             "note_on", &Instrument<double>::NoteOn, "Register note on event.", 
             py::arg("time"), py::arg("id")
@@ -140,7 +143,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<AllPassFilter<double>>(m, "AllPassFilter")
-        .def(py::init<int, double, double>())
+        .def(py::init<int, double, double>(), py::arg("sr"), py::arg("delay"), py::arg("feedback"))
         .def_property("delay",    &AllPassFilter<double>::GetDelay,    &AllPassFilter<double>::SetDelay)
         .def_property("feedback", &AllPassFilter<double>::GetFeedback, &AllPassFilter<double>::SetFeedback)
         .def(
@@ -149,7 +152,7 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<LowPassSinglePole<double>>(m, "LowPassSinglePole")
-        .def(py::init<double>())
+        .def(py::init<double>(), py::arg("damp"))
         .def_property("damp", &LowPassSinglePole<double>::GetDamp, &LowPassSinglePole<double>::SetDamp)
         .def(
             "__call__", &LowPassSinglePole<double>::Output, "Low passed single pole signal.",

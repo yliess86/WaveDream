@@ -29,8 +29,7 @@ namespace wavedream {
     };
 
     template<typename T>
-    LFO<T>::LFO(int osc, T amount, T rate): _amount(amount) {
-        this->_amount = std::min(std::max(rate, (T) 20.0), (T) 0.1);
+    LFO<T>::LFO(int osc, T amount, T rate): _amount(amount), _rate(rate) {
         this->_osc = new Oscillator<T>(osc);    
     }
 
