@@ -67,7 +67,7 @@ namespace wavedream {
                 envelope = this->_adsr->Envelope(time, note->on, note->off);
                 signal += timbre * envelope;
                 
-                if(envelope <= 0.0 && note->off > 0.0) {
+                if((envelope <= 0.0 && note->off > 0.0) || note->on > note->max_life) {
                     note->active = false;
                     note = notes.erase(note);
                 }
