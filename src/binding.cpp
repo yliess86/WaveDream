@@ -55,11 +55,9 @@ PYBIND11_MODULE(wavedream, m) {
     
     py::class_<Note<double>>(m, "Note")
         .def(py::init<int, double>(), py::arg("id"), py::arg("on"))
-        .def(py::init<int, double, double>(), py::arg("id"), py::arg("on"), py::arg("max_life"))
         .def_readwrite("id",       &Note<double>::id)
         .def_readwrite("on",       &Note<double>::on)
         .def_readwrite("off",      &Note<double>::off)
-        .def_readwrite("max_life", &Note<double>::max_life)
         .def_readwrite("active",   &Note<double>::active);
 
     py::class_<Oscillator<double>> osc(m, "Oscillator");

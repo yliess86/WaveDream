@@ -57,17 +57,14 @@ namespace wavedream {
         T signal = (T) 0.0;
 
         this->_lock.lock();
-        for(auto map_it: this->_notes) {
-            int id = map_it.first;
-            std::vector<Note<T>> notes = map_it.second;
-
+        for(auto &[id, notes]: this->_notes) {
             auto note = notes.begin();
             while(note != notes.end()) {
                 timbre = this->_timbre->Output(time, id);
                 envelope = this->_adsr->Envelope(time, note->on, note->off);
                 signal += timbre * envelope;
                 
-                if((envelope <= 0.0 && note->off > 0.0) || note->on > note->max_life) {
+                if((envelope <= 0.0 && note->off > 0.0)) {
                     note->active = false;
                     note = notes.erase(note);
                 }
@@ -90,12 +87,7 @@ namespace wavedream {
     template<typename T>
     void Instrument<T>::NoteOff(T time, int id) {
         this->_lock.lock();
-        for(auto note: this->_notes[id]) {
-            if(note.active && note.off <= 0.0) {
-                note.off = time;
-                break;
-            }
-        }
+        this->_notes[id].back().off = time;
         this->_lock.unlock();
     }
 

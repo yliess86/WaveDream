@@ -38,7 +38,7 @@ class Arpegiator:
         last_note = None
         for note in cycle(self.notes):
             if last_note is not None:
-                harmonica.note_off(clock.time, note)
+                harmonica.note_off(clock.time, last_note)
             harmonica.note_on(clock.time, note)
             last_note = note
             time.sleep(self.delay)
