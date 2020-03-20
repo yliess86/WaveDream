@@ -26,6 +26,10 @@ Here is a list of the features already developed or in developement for the proj
         - [x] Low Pass Filter 
         - [x] High Pass Filter 
         - [x] Band Pass Filter 
+- [ ] Modules
+    - [x] Arpegiator
+    - [ ] Sequencer
+    - [ ] Random Seed
 - [ ] Inputs
     - [ ] Keyboard Inputs
     - [ ] MIDI Controller
