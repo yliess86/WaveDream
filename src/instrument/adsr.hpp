@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cmath>
+
 namespace wavedream {
 
     template<typename T>
@@ -52,7 +54,7 @@ namespace wavedream {
             amplitude = ((time - time_off) / this->_release_time) * (0.0 - release_amplitude) + release_amplitude;
         }
 
-        return (amplitude <= 0.001)? (T) 0.0: amplitude;
+        return (amplitude <= 0.001 || std::isnan(amplitude))? (T) 0.0: amplitude;
     }
 
 }

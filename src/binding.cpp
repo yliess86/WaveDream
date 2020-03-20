@@ -23,6 +23,8 @@ namespace py = pybind11;
 #include "fx/lowpasssinglepole.hpp"
 #include "fx/reverb.hpp"
 
+#include "module/arpegiator.hpp"
+
 using namespace wavedream;
 PYBIND11_MODULE(wavedream, m) {
     std::vector<double> notes;
@@ -197,4 +199,14 @@ PYBIND11_MODULE(wavedream, m) {
         .value("HIGH_PASS", Filter<double>::Mode::HIGH_PASS)
         .value("BAND_PASS", Filter<double>::Mode::BAND_PASS)
         .export_values();
+
+    py::class_<Arpegiator<double>>(m, "Arpegiator")
+        .def(py::init<std::vector<int>, Instrument<double>*, double>(), py::arg("notes"), py::arg("instrument"), py::arg("freq"))
+        .def_property("notes",      &Arpegiator<double>::GetNotes,      &Arpegiator<double>::SetNotes)
+        .def_property("instrument", &Arpegiator<double>::GetInstrument, &Arpegiator<double>::SetInstrument)
+        .def_property("freq",       &Arpegiator<double>::GetFreq,       &Arpegiator<double>::SetFreq)
+        .def(
+            "__call__", &Arpegiator<double>::Output, "Arpegiator output voltage.",
+            py::arg("time")
+        );
 }
