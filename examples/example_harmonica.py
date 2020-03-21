@@ -5,25 +5,15 @@ import wavedream as wa
 import time
 
 
-class Harmonica:
+class Harmonica(wa.Instrument):
     def __init__(self, volume: float) -> None:
-        self.timbre = wa.Timbre()
-        self.timbre.add_formant(wa.Oscillator.Style.SIN,   1.00,  0)
-        self.timbre.add_formant(wa.Oscillator.Style.SIN,   0.50, 12)
-        self.timbre.add_formant(wa.Oscillator.Style.NOISE, 0.25,  0)
-        self.adsr = wa.ADSR(0.0, 1.0, 0.95, 0.1)
-        self.volume = volume
-        
-        self.instrument = wa.Instrument(self.timbre, self.adsr, volume)
-        
-    def __call__(self, time: float) -> float:
-        return self.instrument(time)
-
-    def note_on(self, time: float, id: int) -> None:
-        self.instrument.note_on(time, id)
-
-    def note_off(self, time: float, id: int) -> None:
-        self.instrument.note_off(time, id)
+        self.t = wa.Timbre([
+            wa.Formant(wa.Oscillator.Style.SIN,   1.00,  0),
+            wa.Formant(wa.Oscillator.Style.SIN,   0.50, 12),
+            wa.Formant(wa.Oscillator.Style.NOISE, 0.25,  0),
+        ])
+        self.a = wa.ADSR(0.0, 1.0, 0.95, 0.1)
+        wa.Instrument.__init__(self, self.t, self.a, volume)
 
 
 audio = wa.Audio()
