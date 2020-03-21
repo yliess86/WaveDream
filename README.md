@@ -69,6 +69,7 @@ $ make
 ## Usage
 
 After install and compiling the python module you'll find some example usage of the library in the `examples` folder.
+Example from the `example.py` can be listent at [soundcloud](https://soundcloud.com/yliess-hati/wavedream-demo).
 
 ## Dependencies
 
