@@ -24,6 +24,7 @@ namespace py = pybind11;
 #include "fx/reverb.hpp"
 
 #include "module/arpegiator.hpp"
+#include "module/randomseed.hpp"
 
 using namespace wavedream;
 PYBIND11_MODULE(wavedream, m) {
@@ -207,6 +208,19 @@ PYBIND11_MODULE(wavedream, m) {
         .def_property("freq",       &Arpegiator<double>::GetFreq,       &Arpegiator<double>::SetFreq)
         .def(
             "__call__", &Arpegiator<double>::Output, "Arpegiator output voltage.",
+            py::arg("time")
+        );
+
+    py::class_<RandomSeed<double>>(m, "RandomSeed")
+        .def(py::init<int, int, Instrument<double>*, double>(), py::arg("mean"), py::arg("std"), py::arg("instrument"), py::arg("freq"))
+        .def_property("mean",       &RandomSeed<double>::GetMean,       &RandomSeed<double>::SetMean)
+        .def_property("std",        &RandomSeed<double>::GetStd,        &RandomSeed<double>::SetStd)
+        .def_property("seed",       &RandomSeed<double>::GetSeed,       &RandomSeed<double>::SetSeed)
+        .def_property("instrument", &RandomSeed<double>::GetInstrument, &RandomSeed<double>::SetInstrument)
+        .def_property("freq",       &RandomSeed<double>::GetFreq,       &RandomSeed<double>::SetFreq)
+        .def("randomize", &RandomSeed<double>::Randomize, "Set a new random seed.")
+        .def(
+            "__call__", &RandomSeed<double>::Output, "RandomSeed output voltage.",
             py::arg("time")
         );
 }

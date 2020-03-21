@@ -29,7 +29,7 @@ Here is a list of the features already developed or in developement for the proj
 - [ ] Modules
     - [x] Arpegiator
     - [ ] Sequencer
-    - [ ] Random Seed
+    - [x] Random Seed
 - [ ] Inputs
     - [ ] Keyboard Inputs
     - [ ] MIDI Controller
