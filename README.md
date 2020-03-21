@@ -63,7 +63,7 @@ $ # Build python3 module lib/wavedream.cpython-38-x86_64-linux-gnu.so
 $ make module
 $
 $ # Clean and build python3 module
-$ make all
+$ make
 ```
 
 ## Usage
@@ -73,3 +73,4 @@ After install and compiling the python module you'll find some example usage of 
 ## Dependencies
 
 - libsoundio [SoundIO](http://libsound.io/)
+- pybind11 [Pybind11](https://github.com/pybind/pybind11)
