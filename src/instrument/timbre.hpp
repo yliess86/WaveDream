@@ -13,8 +13,10 @@ namespace wavedream {
         T amplitude;
         int note_id_shift;
 
-        Formant(Oscillator<T> *osc, T amplitude, int note_id_shift):
-            osc(osc), amplitude(amplitude), note_id_shift(note_id_shift) {}
+        Formant(int osc, T amplitude, int note_id_shift):
+            amplitude(amplitude), note_id_shift(note_id_shift) {
+                this->osc = new Oscillator<T>(osc);
+        }
     };
 
     template<typename T>
@@ -23,6 +25,9 @@ namespace wavedream {
             std::vector<Formant<T>> _formants;
 
         public:
+            Timbre() {}
+            Timbre(std::vector<Formant<T>> formants): _formants(formants) {}            
+
             std::vector<Formant<T>> GetFormant(void) { return this->_formants; }
 
             void AddFormant(int osc, T amplitude, int note_id_shift);
@@ -31,10 +36,7 @@ namespace wavedream {
 
     template<typename T>
     void Timbre<T>::AddFormant(int osc, T amplitude, int note_id_shift) {
-        Formant<T> formant = Formant<T>(
-            new Oscillator<T>(osc), amplitude, note_id_shift
-        );
-
+        Formant<T> formant = Formant<T>(osc, amplitude, note_id_shift);
         this->_formants.push_back(formant);
     }
 

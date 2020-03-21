@@ -49,6 +49,7 @@ PYBIND11_MODULE(wavedream, m) {
 
     py::class_<Clock<double>>(m, "Clock")
         .def(py::init<>())
+        .def(py::init<double>(), py::arg("speed"))
         .def_property_readonly("time", &Clock<double>::GetTime)
         .def_property("speed", &Clock<double>::GetSpeed, &Clock<double>::SetSpeed)
         .def(
@@ -91,13 +92,14 @@ PYBIND11_MODULE(wavedream, m) {
         );
 
     py::class_<Formant<double>>(m, "Formant")
-        .def(py::init<Oscillator<double>*, double, int>(), py::arg("osc"), py::arg("amplitude"), py::arg("note_id_shift"))
+        .def(py::init<int, double, int>(), py::arg("osc"), py::arg("amplitude"), py::arg("note_id_shift"))
         .def_readwrite("osc",           &Formant<double>::osc)
         .def_readwrite("amplitude",     &Formant<double>::amplitude)
         .def_readwrite("note_id_shift", &Formant<double>::note_id_shift);
     
     py::class_<Timbre<double>>(m, "Timbre")
         .def(py::init<>())
+        .def(py::init<std::vector<Formant<double>>>(), py::arg("formants"))
         .def_property_readonly("formants", &Timbre<double>::GetFormant)
         .def(
             "add_formant", &Timbre<double>::AddFormant, "Add formant to timbre.",
