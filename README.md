@@ -54,16 +54,16 @@ $ make
 $ (sudo) make install
 ```
 
-Build library:
+Install library (may require sudo):
 ```bash
-$ # Clean build directories
-$ make clean
+$ # Install inplace
+$ pyton3 setup.py build_ext --inplace
 $
-$ # Build python3 module lib/wavedream.cpython-38-x86_64-linux-gnu.so
-$ make module
+$ # Install
+$ (sudo) python3 setup.py install
 $
-$ # Clean and build python3 module
-$ make
+$ # Uninstall
+$ (sudo) pip3 remove wavedream
 ```
 
 ## Usage
