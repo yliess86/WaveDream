@@ -113,6 +113,10 @@ PYBIND11_MODULE(wavedream, m) {
 
     py::class_<ADSR<double>>(m, "ADSR")
         .def(py::init<double, double, double, double>(), py::arg("attack"), py::arg("delay"), py::arg("sustain"), py::arg("release"))
+        .def_property("attack",  &ADSR<double>::GetAttack,  &ADSR<double>::SetAttack)
+        .def_property("decay",   &ADSR<double>::GetDecay,   &ADSR<double>::SetDecay)
+        .def_property("sustain", &ADSR<double>::GetSustain, &ADSR<double>::SetSustain)
+        .def_property("release", &ADSR<double>::GetRelease, &ADSR<double>::SetRelease)
         .def(
             "__call__", &ADSR<double>::Envelope, "Get ADSR enveloppe.",
             py::arg("time"), py::arg("time_on"), py::arg("time_off")

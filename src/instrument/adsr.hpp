@@ -21,6 +21,18 @@ namespace wavedream {
                 _sustain(sustain),
                 _release_time(release_time) {}
 
+            T GetAttack(void) { return this->_attack_time; }
+            void SetAttack(T attack) { this->_attack_time = attack; }
+            
+            T GetDecay(void) { return this->_decay_time; }
+            void SetDecay(T decay) { this->_decay_time = decay; }
+            
+            T GetSustain(void) { return this->_sustain; }
+            void SetSustain(T sustain) { this->_sustain = sustain; }
+            
+            T GetRelease(void) { return this->_release_time; }
+            void SetRelease(T release) { this->_release_time = release; }
+
             T Envelope(T time, T time_on, T time_off);
     };
 
