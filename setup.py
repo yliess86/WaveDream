@@ -17,22 +17,17 @@ desciption = (
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-cpp_args = [
-    "-std=c++17", 
-    "-lsoundio",
-    "-lpthread"
-]
-
 ext_modules = [
     Extension(
         "wavedream",
-        ["src/binding.cpp"],
+        sources=["src/binding.cpp"],
         include_dirs=[
             pybind11.get_include(False), 
             pybind11.get_include(True)
         ],
         language="c++",
-        extra_compile_args=cpp_args
+        extra_compile_args=["-std=c++17"],
+        extra_link_args=["-lpthread", "-lsoundio"],
     )
 ]
 
@@ -47,5 +42,5 @@ setup(
     url="https://github.com/yliess86/WaveDream",
     python_requires=">=3.6",
     install_requires=["numpy", "pybind11"],
-    ext_modules=ext_modules
+    ext_modules=ext_modules,
 )
