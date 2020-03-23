@@ -27,6 +27,7 @@ namespace py = pybind11;
 #include "module/randomseed.hpp"
 
 using namespace wavedream;
+PYBIND11_DECLARE_HOLDER_TYPE(T, std::shared_ptr<T>);
 PYBIND11_MODULE(wavedream, m) {
     std::vector<double> notes;
     notes.assign(std::begin(NOTES), std::end(NOTES));
