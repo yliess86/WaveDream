@@ -1,9 +1,3 @@
-from itertools import cycle
-from typing import List
-
-import sys
-sys.path.append("../lib/")
-
 import wavedream as wa
 import time
 

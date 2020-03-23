@@ -1,6 +1,3 @@
-import sys
-sys.path.append("lib/")
-
 import wavedream as wa
 import time
 
