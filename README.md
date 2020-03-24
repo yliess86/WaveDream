@@ -15,6 +15,10 @@ Here is a list of the features already developed or in developement for the proj
 - [x] ADSR Enveloppe
 - [x] LFO modulation
 - [x] Note
+- [ ] Scales
+    - Major [x]
+    - Minor [x]
+    - Pentatonic [ ]
 - [x] Instrument
 - [x] FXs
     - [x] Reverb

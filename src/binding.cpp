@@ -10,6 +10,7 @@ namespace py = pybind11;
 #include "core/const.hpp"
 #include "core/lfo.hpp"
 #include "core/osc.hpp"
+#include "core/scale.hpp"
 
 #include "instrument/adsr.hpp"
 #include "instrument/instrument.hpp"
@@ -229,5 +230,13 @@ PYBIND11_MODULE(wavedream, m) {
         .def(
             "__call__", &RandomSeed<double>::Output, "RandomSeed output voltage.",
             py::arg("time")
+        );
+
+    py::class_<Scale>(m, "Scale")
+        .def_static(
+            "major", &Scale::Major, "Major scale", py::arg("key")
+        )
+        .def_static(
+            "minor", &Scale::Minor, "Minor scale", py::arg("key")
         );
 }
