@@ -20,7 +20,7 @@ namespace wavedream {
             void SetAmount(T amount) { this->_amount = amount; }
 
             T GetRate(void) { return this->_rate; }
-            void SetRate(T rate) { this->_rate = std::min(std::max(rate, (T) 20.0), (T) 0.1); }
+            void SetRate(T rate) { this->_rate = std::min(std::max(rate, (T) 0.0), (T) 20.0); }
 
             Oscillator<T>* GetOsc(void) { return this->_osc; }
             void SetOsc(int osc) { this->_osc = new Oscillator<T>(osc); }

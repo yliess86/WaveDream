@@ -221,6 +221,8 @@ PYBIND11_MODULE(wavedream, m) {
 
     py::class_<RandomSeed<double>>(m, "RandomSeed")
         .def(py::init<int, int, Instrument<double>*, double>(), py::arg("mean"), py::arg("std"), py::arg("instrument"), py::arg("freq"))
+        .def(py::init<std::vector<int>, int, Instrument<double>*, double>(), py::arg("notes"), py::arg("std"), py::arg("instrument"), py::arg("freq"))
+        .def(py::init<std::vector<int>, int, int, Instrument<double>*, double>(), py::arg("notes"), py::arg("mean"), py::arg("std"), py::arg("instrument"), py::arg("freq"))
         .def_property("mean",       &RandomSeed<double>::GetMean,       &RandomSeed<double>::SetMean)
         .def_property("std",        &RandomSeed<double>::GetStd,        &RandomSeed<double>::SetStd)
         .def_property("seed",       &RandomSeed<double>::GetSeed,       &RandomSeed<double>::SetSeed)
